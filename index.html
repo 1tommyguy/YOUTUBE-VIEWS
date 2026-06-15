@@ -1,864 +1,565 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>YT Automation Hub — Tutorial Library</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet" />
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>YT Automation Hub</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+[data-theme="dark"]{--bg:#09090b;--surface:#111115;--card:#18181b;--border:#27272a;--text:#fafafa;--muted:#71717a;--sub:#3f3f46}
+[data-theme="light"]{--bg:#f8fafc;--surface:#fff;--card:#fff;--border:#e4e4e7;--text:#09090b;--muted:#71717a;--sub:#e4e4e7}
+:root{--red:#ff0000;--red2:#cc0000;--reddim:rgba(255,0,0,.1);--redborder:rgba(255,0,0,.25);--green:#22c55e;--r:14px}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-height:100vh;transition:background .3s,color .3s}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--sub);border-radius:3px}
 
-    :root {
-      --red: #FF0000;
-      --red-hover: #cc0000;
-      --dark: #0a0a0a;
-      --surface: #111318;
-      --card: #16191f;
-      --border: #1f2229;
-      --text: #f4f4f5;
-      --muted: #71717a;
-      --subtle: #27272a;
-    }
+/* NAV */
+nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;gap:.75rem;padding:0 1.5rem;height:62px;background:rgba(9,9,11,.88);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);transition:background .3s}
+[data-theme="light"] nav{background:rgba(248,250,252,.88)}
+.nav-logo{display:flex;align-items:center;gap:.5rem;font-weight:800;font-size:.95rem;text-decoration:none;color:var(--text);white-space:nowrap;flex-shrink:0}
+.logo-box{width:30px;height:30px;background:var(--red);border-radius:7px;display:grid;place-items:center;flex-shrink:0}
+.logo-box svg{width:15px;height:15px;fill:#fff}
+.nav-search{flex:1;max-width:320px;position:relative}
+.nav-search input{width:100%;background:var(--sub);border:1px solid var(--border);border-radius:9px;padding:.42rem .85rem .42rem 2.2rem;color:var(--text);font-size:.83rem;font-family:'Inter',sans-serif;outline:none;transition:border-color .2s}
+.nav-search input:focus{border-color:var(--red)}
+.nav-search input::placeholder{color:var(--muted)}
+.nav-search .si{position:absolute;left:.65rem;top:50%;transform:translateY(-50%);width:13px;height:13px;stroke:var(--muted);fill:none;pointer-events:none}
+.nav-r{display:flex;align-items:center;gap:.5rem;margin-left:auto;flex-shrink:0}
+.icon-pill{width:34px;height:34px;border-radius:8px;border:1px solid var(--border);background:transparent;cursor:pointer;display:grid;place-items:center;color:var(--muted);font-size:.9rem;transition:color .2s,background .2s}
+.icon-pill:hover{color:var(--text);background:var(--sub)}
+.btn-p{padding:.46rem 1rem;border:none;border-radius:9px;background:var(--red);color:#fff;font-size:.83rem;font-weight:600;cursor:pointer;transition:background .2s,transform .15s;font-family:'Inter',sans-serif;white-space:nowrap}
+.btn-p:hover{background:var(--red2);transform:translateY(-1px)}
+.btn-o{padding:.46rem 1rem;border:1px solid var(--border);border-radius:9px;background:transparent;color:var(--text);font-size:.83rem;font-weight:500;cursor:pointer;transition:background .2s;font-family:'Inter',sans-serif;text-decoration:none;white-space:nowrap}
+.btn-o:hover{background:var(--sub)}
 
-    html { scroll-behavior: smooth; }
+/* HERO */
+.hero{text-align:center;padding:5.5rem 1.5rem 4rem;position:relative;overflow:hidden}
+.hero-glow{position:absolute;inset:0;background:radial-gradient(ellipse 65% 45% at 50% 0%,rgba(255,0,0,.11),transparent 70%);pointer-events:none}
+.badge{display:inline-flex;align-items:center;gap:.4rem;padding:.26rem .8rem;border-radius:999px;border:1px solid var(--redborder);background:var(--reddim);font-size:.7rem;font-weight:600;color:#f87171;letter-spacing:.05em;margin-bottom:1.4rem}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--red);animation:blink 1.8s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.hero h1{font-size:clamp(2.5rem,7vw,5rem);font-weight:900;letter-spacing:-.03em;line-height:1.05;max-width:780px;margin:0 auto 1.1rem}
+.hero h1 em{font-style:normal;color:var(--red)}
+.hero-sub{font-size:clamp(.9rem,2vw,1.1rem);color:var(--muted);max-width:500px;margin:0 auto 2.5rem;line-height:1.75}
+.hero-ctas{display:flex;gap:.7rem;justify-content:center;flex-wrap:wrap}
+.btn-lg{padding:.72rem 1.75rem;font-size:.93rem;border-radius:11px}
 
-    body {
-      background: var(--dark);
-      color: var(--text);
-      font-family: 'Inter', sans-serif;
-      min-height: 100vh;
-      font-size: 16px;
-      line-height: 1.6;
-    }
+/* STATS */
+.stats-bar{display:flex;border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:var(--surface);flex-wrap:wrap}
+.stat-item{flex:1;min-width:110px;padding:1.3rem 1rem;text-align:center;border-right:1px solid var(--border)}
+.stat-item:last-child{border-right:none}
+.stat-val{font-size:1.7rem;font-weight:900;letter-spacing:-.02em;line-height:1}
+.stat-val .acc{color:var(--red)}
+.stat-lbl{font-size:.7rem;color:var(--muted);margin-top:.2rem;letter-spacing:.03em}
 
-    /* ─── NAV ─── */
-    nav {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 2rem;
-      height: 64px;
-      background: rgba(10,10,10,0.85);
-      backdrop-filter: blur(16px);
-      border-bottom: 1px solid var(--border);
-    }
+/* SECTION */
+.s{max-width:1100px;margin:0 auto;padding:4rem 1.5rem}
+hr{border:none;border-top:1px solid var(--border)}
+.slabel{font-size:.7rem;font-weight:600;letter-spacing:.15em;color:var(--red);text-transform:uppercase;margin-bottom:.35rem}
+.stitle{font-size:clamp(1.4rem,3vw,2rem);font-weight:700;letter-spacing:-.02em}
 
-    .nav-logo {
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
-      font-weight: 700;
-      font-size: 1.05rem;
-      letter-spacing: -0.01em;
-      text-decoration: none;
-      color: var(--text);
-    }
+/* ABOUT */
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center}
+.about-pts{display:flex;flex-direction:column;gap:.85rem;margin-top:1.4rem}
+.about-pt{display:flex;align-items:flex-start;gap:.7rem;padding:.9rem;background:var(--surface);border:1px solid var(--border);border-radius:12px}
+.pt-icon{width:30px;height:30px;border-radius:7px;background:var(--reddim);border:1px solid var(--redborder);display:grid;place-items:center;font-size:.85rem;flex-shrink:0}
+.pt-text strong{display:block;font-size:.85rem;font-weight:600;margin-bottom:.1rem}
+.pt-text p{font-size:.77rem;color:var(--muted);line-height:1.5}
+.about-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:1.75rem;display:flex;flex-direction:column;gap:.75rem}
+.ac-row{display:flex;align-items:center;justify-content:space-between;padding:.65rem .85rem;background:var(--surface);border-radius:9px}
+.ac-lbl{font-size:.8rem;color:var(--muted)}
+.ac-val{font-size:.88rem;font-weight:700;color:var(--red)}
 
-    .logo-icon {
-      width: 32px;
-      height: 32px;
-      background: var(--red);
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-    }
+/* FEATURED */
+.feat-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:2.5rem;align-items:start}
+.vframe{border-radius:var(--r);overflow:hidden;background:#000;border:1px solid var(--border);box-shadow:0 20px 60px rgba(0,0,0,.45);cursor:pointer;position:relative}
+.vframe .ratio{position:relative;padding-bottom:56.25%}
+.vframe img,.vframe iframe{position:absolute;inset:0;width:100%;height:100%;border:none;object-fit:cover}
+.play-ov{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.3);transition:background .2s}
+.vframe:hover .play-ov{background:rgba(0,0,0,.18)}
+.play-circle{width:62px;height:62px;border-radius:50%;background:var(--red);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 30px rgba(255,0,0,.5);transition:transform .2s}
+.vframe:hover .play-circle{transform:scale(1.08)}
+.play-circle svg{width:22px;height:22px;fill:#fff;margin-left:3px}
+.feat-info{display:flex;flex-direction:column;gap:1rem}
+.tag{display:inline-block;padding:.2rem .6rem;border-radius:6px;font-size:.68rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;width:fit-content}
+.tg-beg{background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.22);color:#4ade80}
+.tg-tool{background:rgba(59,130,246,.1);border:1px solid rgba(59,130,246,.22);color:#60a5fa}
+.tg-mon{background:rgba(234,179,8,.1);border:1px solid rgba(234,179,8,.22);color:#facc15}
+.tg-adv{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.22);color:#f87171}
+.tg-short{background:rgba(168,85,247,.1);border:1px solid rgba(168,85,247,.22);color:#c084fc}
+.feat-info h2{font-size:clamp(1.25rem,2.5vw,1.75rem);font-weight:700;letter-spacing:-.02em;line-height:1.2}
+.feat-info p{color:var(--muted);font-size:.93rem;line-height:1.72}
+.ytlink{display:inline-flex;align-items:center;gap:.5rem;padding:.62rem 1.25rem;background:var(--red);color:#fff;border-radius:9px;font-weight:600;font-size:.85rem;text-decoration:none;width:fit-content;transition:background .2s,transform .2s}
+.ytlink:hover{background:var(--red2);transform:translateY(-1px)}
+.ytlink svg{width:15px;height:15px;fill:#fff}
 
-    .logo-icon svg { width: 16px; height: 16px; fill: #fff; }
+/* EMAIL */
+.email-sec{background:linear-gradient(135deg,rgba(255,0,0,.06),rgba(255,0,0,.02));border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.email-inn{max-width:1100px;margin:0 auto;padding:2.75rem 1.5rem;display:flex;align-items:center;justify-content:space-between;gap:2rem;flex-wrap:wrap}
+.email-txt h3{font-size:1.2rem;font-weight:700;margin-bottom:.3rem}
+.email-txt p{color:var(--muted);font-size:.87rem}
+.email-form{display:flex;gap:.55rem;flex-wrap:wrap}
+.email-form input{padding:.62rem .95rem;background:var(--card);border:1px solid var(--border);border-radius:9px;color:var(--text);font-size:.85rem;font-family:'Inter',sans-serif;outline:none;width:255px;transition:border-color .2s}
+.email-form input:focus{border-color:var(--red)}
+.email-form input::placeholder{color:var(--muted)}
 
-    .nav-actions { display: flex; align-items: center; gap: 0.75rem; }
+/* LIBRARY CONTROLS */
+.lib-top{display:flex;align-items:flex-end;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin-bottom:1.4rem}
+.lib-ctrl{display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;margin-bottom:1.4rem}
+.ftabs{display:flex;gap:.35rem;flex-wrap:wrap;flex:1}
+.ftab{padding:.35rem .85rem;border-radius:7px;border:1px solid var(--border);background:transparent;color:var(--muted);font-size:.78rem;font-weight:500;cursor:pointer;transition:all .2s;font-family:'Inter',sans-serif}
+.ftab:hover{color:var(--text);border-color:#555}
+.ftab.active{background:var(--red);border-color:var(--red);color:#fff}
+.sort-sel{padding:.35rem .75rem;border-radius:7px;border:1px solid var(--border);background:var(--sub);color:var(--text);font-size:.78rem;font-family:'Inter',sans-serif;cursor:pointer;outline:none}
 
-    .btn-outline {
-      padding: 0.45rem 1.1rem;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      background: transparent;
-      color: var(--text);
-      font-size: 0.85rem;
-      font-weight: 500;
-      cursor: pointer;
-      transition: border-color 0.2s, background 0.2s;
-      font-family: 'Inter', sans-serif;
-      text-decoration: none;
-    }
-    .btn-outline:hover { border-color: #444; background: var(--subtle); }
+/* VIDEO GRID */
+.vgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(295px,1fr));gap:1.2rem}
+.vcard{background:var(--card);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;transition:border-color .2s,transform .2s,box-shadow .2s;position:relative}
+.vcard:hover{border-color:#444;transform:translateY(-2px);box-shadow:0 8px 32px rgba(0,0,0,.3)}
+.vcard.pinned{border-color:rgba(255,0,0,.32)}
+.vcard.done .ctitle{text-decoration:line-through;text-decoration-color:var(--muted)}
+.vcard.done{opacity:.65}
+.pin-badge{position:absolute;top:9px;left:9px;z-index:2;background:var(--red);color:#fff;font-size:.58rem;font-weight:700;padding:.16rem .48rem;border-radius:4px;letter-spacing:.07em;text-transform:uppercase}
+.cthumb{position:relative;padding-bottom:56.25%;background:#111;cursor:pointer;overflow:hidden}
+.cthumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .3s}
+.vcard:hover .cthumb img{transform:scale(1.04)}
+.cthumb iframe{position:absolute;inset:0;width:100%;height:100%;border:none}
+.cplay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.28);transition:background .2s}
+.cthumb:hover .cplay{background:rgba(0,0,0,.15)}
+.cplay-btn{width:46px;height:46px;border-radius:50%;background:rgba(255,0,0,.9);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 18px rgba(255,0,0,.4)}
+.cplay-btn svg{width:17px;height:17px;fill:#fff;margin-left:2px}
+.cbody{padding:.95rem .95rem .45rem}
+.cmeta{display:flex;align-items:center;justify-content:space-between;margin-bottom:.45rem}
+.ctitle{font-size:.9rem;font-weight:600;line-height:1.35;margin-bottom:.45rem}
+.cwriteup{font-size:.78rem;color:var(--muted);line-height:1.62;white-space:pre-wrap;max-height:72px;overflow:hidden;position:relative}
+.cwriteup::after{content:'';position:absolute;bottom:0;left:0;right:0;height:28px;background:linear-gradient(transparent,var(--card))}
+.cactions{display:flex;align-items:center;gap:.2rem;padding:.55rem .7rem;border-top:1px solid var(--border);margin-top:.7rem}
+.cdate{font-size:.7rem;color:var(--muted);margin-right:auto}
+.ibtn{width:28px;height:28px;border-radius:6px;border:none;background:transparent;cursor:pointer;display:grid;place-items:center;color:var(--muted);transition:color .2s,background .2s;flex-shrink:0}
+.ibtn:hover{background:var(--sub);color:var(--text)}
+.ibtn.del:hover{color:#ef4444}
+.ibtn.active{color:var(--red)}
+.ibtn.wactive{color:var(--green)}
+.ibtn svg{width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 
-    .btn-primary {
-      padding: 0.45rem 1.1rem;
-      border: none;
-      border-radius: 8px;
-      background: var(--red);
-      color: #fff;
-      font-size: 0.85rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: background 0.2s, transform 0.15s;
-      font-family: 'Inter', sans-serif;
-    }
-    .btn-primary:hover { background: var(--red-hover); transform: translateY(-1px); }
+/* SHORTS */
+.sgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(185px,1fr));gap:1.1rem}
+.scard{background:var(--card);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;transition:transform .2s,border-color .2s}
+.scard:hover{transform:translateY(-3px);border-color:#444}
+.sthumb{position:relative;padding-bottom:177.78%;background:#111;cursor:pointer;overflow:hidden}
+.sthumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.sthumb iframe{position:absolute;inset:0;width:100%;height:100%;border:none}
+.sbody{padding:.8rem}
+.stitle{font-size:.83rem;font-weight:600;margin-bottom:.35rem;line-height:1.3}
+.sdesc{font-size:.74rem;color:var(--muted);line-height:1.5}
+.sact{display:flex;justify-content:flex-end;gap:.2rem;padding:.45rem .55rem;border-top:1px solid var(--border)}
 
-    /* ─── HERO ─── */
-    .hero {
-      position: relative;
-      overflow: hidden;
-      padding: 5rem 2rem 4rem;
-      text-align: center;
-    }
+/* EMPTY */
+.empty{grid-column:1/-1;text-align:center;padding:3rem 2rem;border:1px dashed var(--border);border-radius:var(--r);color:var(--muted)}
+.empty-ico{font-size:2.2rem;margin-bottom:.65rem}
+.empty p{font-size:.85rem}
 
-    .hero-bg {
-      position: absolute;
-      inset: 0;
-      background:
-        radial-gradient(ellipse 70% 50% at 50% -10%, rgba(255,0,0,0.12) 0%, transparent 70%);
-      pointer-events: none;
-    }
+/* MODAL */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.72);backdrop-filter:blur(8px);z-index:200;display:flex;align-items:center;justify-content:center;padding:1.5rem;opacity:0;pointer-events:none;transition:opacity .22s}
+.overlay.open{opacity:1;pointer-events:all}
+.modal{background:var(--card);border:1px solid var(--border);border-radius:18px;width:100%;max-width:510px;max-height:90vh;overflow-y:auto;padding:1.65rem;transform:translateY(22px) scale(.97);transition:transform .24s}
+.overlay.open .modal{transform:none}
+.modal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.4rem}
+.modal-head h3{font-size:1.05rem;font-weight:700}
+.cbtn{width:30px;height:30px;border-radius:7px;background:var(--sub);border:none;cursor:pointer;font-size:1rem;color:var(--muted);display:grid;place-items:center;transition:color .2s}
+.cbtn:hover{color:var(--text)}
+.type-tog{display:flex;gap:.35rem;margin-bottom:1.2rem;background:var(--sub);padding:.28rem;border-radius:9px}
+.tbtn{flex:1;padding:.42rem;border-radius:7px;border:none;background:transparent;color:var(--muted);font-size:.8rem;font-weight:600;cursor:pointer;transition:all .2s;font-family:'Inter',sans-serif}
+.tbtn.active{background:var(--card);color:var(--text);box-shadow:0 1px 4px rgba(0,0,0,.25)}
+.fg{margin-bottom:.9rem}
+.fg label{display:block;font-size:.78rem;font-weight:500;color:var(--muted);margin-bottom:.35rem}
+.fg input,.fg textarea,.fg select{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:9px;padding:.6rem .85rem;color:var(--text);font-size:.85rem;font-family:'Inter',sans-serif;outline:none;transition:border-color .2s}
+.fg input:focus,.fg textarea:focus,.fg select:focus{border-color:var(--red)}
+.fg input::placeholder,.fg textarea::placeholder{color:var(--muted)}
+.fg textarea{min-height:95px;resize:vertical}
+.fg select option{background:var(--card)}
+.ferr{font-size:.73rem;color:#f87171;margin-top:.28rem;display:none}
+.mfoot{display:flex;gap:.65rem;justify-content:flex-end;margin-top:1.4rem}
 
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.4rem;
-      padding: 0.3rem 0.85rem;
-      border: 1px solid rgba(255,0,0,0.3);
-      border-radius: 999px;
-      font-size: 0.75rem;
-      font-weight: 500;
-      color: #ff6666;
-      background: rgba(255,0,0,0.06);
-      margin-bottom: 1.5rem;
-      letter-spacing: 0.05em;
-    }
-    .badge-dot {
-      width: 6px; height: 6px;
-      border-radius: 50%;
-      background: var(--red);
-      animation: blink 1.8s ease-in-out infinite;
-    }
-    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+/* TOAST */
+.toast{position:fixed;bottom:1.4rem;right:1.4rem;padding:.75rem 1.1rem;background:var(--card);border:1px solid var(--border);border-radius:9px;font-size:.83rem;font-weight:500;color:var(--text);box-shadow:0 8px 28px rgba(0,0,0,.3);z-index:999;opacity:0;transform:translateY(8px);transition:opacity .2s,transform .2s;pointer-events:none;max-width:280px}
+.toast.show{opacity:1;transform:none}
+.toast.ok{border-color:rgba(34,197,94,.3)}
 
-    .hero h1 {
-      font-size: clamp(2.4rem, 6vw, 4.8rem);
-      font-weight: 900;
-      letter-spacing: -0.03em;
-      line-height: 1.05;
-      max-width: 760px;
-      margin: 0 auto 1.2rem;
-    }
+/* BACK TOP */
+.btt{position:fixed;bottom:1.4rem;left:1.4rem;width:38px;height:38px;border-radius:9px;background:var(--sub);border:1px solid var(--border);cursor:pointer;display:grid;place-items:center;color:var(--muted);font-size:1rem;z-index:50;opacity:0;transform:translateY(8px);pointer-events:none;transition:all .2s}
+.btt.show{opacity:1;transform:none;pointer-events:all}
+.btt:hover{color:var(--text)}
 
-    .hero h1 em {
-      font-style: normal;
-      color: var(--red);
-    }
+/* FOOTER */
+footer{border-top:1px solid var(--border);padding:2rem 1.5rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.75rem}
+footer p{font-size:.76rem;color:var(--muted)}
+footer a{color:var(--muted);text-decoration:none}
+footer a:hover{color:var(--text)}
 
-    .hero-sub {
-      font-size: clamp(0.95rem, 2vw, 1.15rem);
-      color: var(--muted);
-      max-width: 520px;
-      margin: 0 auto 2.5rem;
-      font-weight: 400;
-    }
-
-    .hero-ctas {
-      display: flex;
-      gap: 0.75rem;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-
-    .btn-lg {
-      padding: 0.75rem 1.8rem;
-      font-size: 0.95rem;
-    }
-
-    /* ─── STATS BAR ─── */
-    .stats-bar {
-      display: flex;
-      justify-content: center;
-      gap: 0;
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-      background: var(--surface);
-      flex-wrap: wrap;
-    }
-
-    .stat-item {
-      flex: 1;
-      min-width: 140px;
-      max-width: 220px;
-      padding: 1.5rem 2rem;
-      text-align: center;
-      border-right: 1px solid var(--border);
-    }
-    .stat-item:last-child { border-right: none; }
-
-    .stat-val {
-      font-size: 1.8rem;
-      font-weight: 800;
-      color: var(--text);
-      letter-spacing: -0.02em;
-    }
-    .stat-val span { color: var(--red); }
-
-    .stat-desc {
-      font-size: 0.78rem;
-      color: var(--muted);
-      margin-top: 0.15rem;
-      letter-spacing: 0.03em;
-    }
-
-    /* ─── SECTION WRAPPER ─── */
-    .section {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 4rem 2rem;
-    }
-
-    .section-header {
-      margin-bottom: 2rem;
-    }
-
-    .section-label {
-      font-size: 0.72rem;
-      font-weight: 600;
-      letter-spacing: 0.15em;
-      color: var(--red);
-      text-transform: uppercase;
-      margin-bottom: 0.5rem;
-    }
-
-    .section-title {
-      font-size: clamp(1.5rem, 3vw, 2rem);
-      font-weight: 700;
-      letter-spacing: -0.02em;
-    }
-
-    /* ─── FEATURED VIDEO ─── */
-    .featured-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 2rem;
-      align-items: start;
-    }
-
-    @media (max-width: 768px) {
-      .featured-grid { grid-template-columns: 1fr; }
-      .stat-item { max-width: none; border-right: none; border-bottom: 1px solid var(--border); }
-      .stat-item:last-child { border-bottom: none; }
-    }
-
-    .video-embed-wrap {
-      position: relative;
-      border-radius: 14px;
-      overflow: hidden;
-      background: #000;
-      box-shadow: 0 0 0 1px var(--border), 0 20px 60px rgba(0,0,0,0.5);
-    }
-
-    .video-embed-wrap .ratio {
-      position: relative;
-      padding-bottom: 56.25%;
-    }
-
-    .video-embed-wrap iframe {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      border: none;
-      border-radius: 14px;
-    }
-
-    .featured-info {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-      padding-top: 0.5rem;
-    }
-
-    .tag {
-      display: inline-block;
-      padding: 0.25rem 0.65rem;
-      border-radius: 6px;
-      background: rgba(255,0,0,0.1);
-      border: 1px solid rgba(255,0,0,0.2);
-      font-size: 0.72rem;
-      font-weight: 600;
-      color: #ff6666;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-    }
-
-    .featured-info h2 {
-      font-size: clamp(1.3rem, 2.5vw, 1.7rem);
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      line-height: 1.2;
-    }
-
-    .featured-info p {
-      color: var(--muted);
-      font-size: 0.95rem;
-      line-height: 1.7;
-    }
-
-    .yt-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 0.6rem 1.3rem;
-      background: var(--red);
-      color: #fff;
-      border-radius: 8px;
-      font-weight: 600;
-      font-size: 0.85rem;
-      text-decoration: none;
-      width: fit-content;
-      transition: background 0.2s;
-    }
-    .yt-link:hover { background: var(--red-hover); }
-    .yt-link svg { width: 16px; height: 16px; fill: #fff; }
-
-    /* ─── DIVIDER ─── */
-    .divider {
-      border: none;
-      border-top: 1px solid var(--border);
-      margin: 0;
-    }
-
-    /* ─── LIBRARY ─── */
-    .library-header {
-      display: flex;
-      align-items: flex-end;
-      justify-content: space-between;
-      gap: 1rem;
-      flex-wrap: wrap;
-    }
-
-    .video-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
-      gap: 1.5rem;
-      margin-top: 2rem;
-    }
-
-    .video-card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      overflow: hidden;
-      transition: border-color 0.2s, transform 0.2s;
-    }
-    .video-card:hover { border-color: #333; transform: translateY(-3px); }
-
-    .card-thumb {
-      position: relative;
-      padding-bottom: 56.25%;
-      background: #000;
-    }
-    .card-thumb iframe {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      border: none;
-    }
-
-    .card-body { padding: 1.2rem; }
-
-    .card-title {
-      font-size: 0.95rem;
-      font-weight: 600;
-      margin-bottom: 0.5rem;
-      line-height: 1.3;
-    }
-
-    .card-writeup {
-      font-size: 0.83rem;
-      color: var(--muted);
-      line-height: 1.65;
-      white-space: pre-wrap;
-    }
-
-    .card-footer {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0.75rem 1.2rem;
-      border-top: 1px solid var(--border);
-    }
-
-    .card-date { font-size: 0.75rem; color: var(--muted); }
-
-    .btn-icon {
-      background: none;
-      border: none;
-      cursor: pointer;
-      color: var(--muted);
-      padding: 0.25rem;
-      border-radius: 6px;
-      transition: color 0.2s, background 0.2s;
-      display: flex;
-      align-items: center;
-    }
-    .btn-icon:hover { color: #ff4444; background: rgba(255,0,0,0.08); }
-    .btn-icon svg { width: 16px; height: 16px; fill: currentColor; }
-
-    /* ─── EMPTY STATE ─── */
-    .empty-state {
-      grid-column: 1/-1;
-      text-align: center;
-      padding: 4rem 2rem;
-      border: 1px dashed var(--border);
-      border-radius: 14px;
-      color: var(--muted);
-    }
-    .empty-state svg { width: 48px; height: 48px; fill: var(--subtle); margin-bottom: 1rem; }
-    .empty-state p { font-size: 0.9rem; }
-
-    /* ─── MODAL ─── */
-    .modal-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.75);
-      backdrop-filter: blur(6px);
-      z-index: 200;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 1.5rem;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.2s;
-    }
-    .modal-overlay.open { opacity: 1; pointer-events: all; }
-
-    .modal {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      width: 100%;
-      max-width: 540px;
-      padding: 2rem;
-      transform: translateY(20px) scale(0.97);
-      transition: transform 0.25s;
-    }
-    .modal-overlay.open .modal { transform: none; }
-
-    .modal-top {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 1.5rem;
-    }
-
-    .modal-top h3 { font-size: 1.1rem; font-weight: 700; }
-
-    .close-btn {
-      background: var(--subtle);
-      border: none;
-      width: 32px;
-      height: 32px;
-      border-radius: 8px;
-      cursor: pointer;
-      color: var(--muted);
-      font-size: 1.1rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: color 0.2s;
-    }
-    .close-btn:hover { color: var(--text); }
-
-    .form-group {
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-      margin-bottom: 1.1rem;
-    }
-
-    .form-group label {
-      font-size: 0.82rem;
-      font-weight: 500;
-      color: var(--muted);
-    }
-
-    .form-group input,
-    .form-group textarea {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 0.7rem 1rem;
-      color: var(--text);
-      font-size: 0.9rem;
-      font-family: 'Inter', sans-serif;
-      outline: none;
-      transition: border-color 0.2s;
-      width: 100%;
-      resize: vertical;
-    }
-    .form-group input:focus,
-    .form-group textarea:focus { border-color: var(--red); }
-    .form-group input::placeholder,
-    .form-group textarea::placeholder { color: var(--muted); }
-
-    .form-group textarea { min-height: 110px; }
-
-    .form-error {
-      font-size: 0.78rem;
-      color: #ff6666;
-      margin-top: 0.2rem;
-      display: none;
-    }
-
-    .modal-actions {
-      display: flex;
-      gap: 0.75rem;
-      justify-content: flex-end;
-      margin-top: 1.5rem;
-    }
-
-    /* ─── TOAST ─── */
-    .toast {
-      position: fixed;
-      bottom: 2rem;
-      right: 2rem;
-      background: #18181b;
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 0.85rem 1.3rem;
-      font-size: 0.85rem;
-      font-weight: 500;
-      color: var(--text);
-      box-shadow: 0 8px 30px rgba(0,0,0,0.4);
-      z-index: 300;
-      transform: translateY(10px);
-      opacity: 0;
-      transition: opacity 0.2s, transform 0.2s;
-      pointer-events: none;
-    }
-    .toast.show { opacity: 1; transform: none; }
-    .toast.success { border-color: #22c55e44; }
-
-    /* ─── FOOTER ─── */
-    footer {
-      border-top: 1px solid var(--border);
-      padding: 2rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 1rem;
-    }
-    footer p { font-size: 0.8rem; color: var(--muted); }
-    footer a { color: var(--muted); text-decoration: none; }
-    footer a:hover { color: var(--text); }
-  </style>
+/* RESPONSIVE */
+@media(max-width:900px){.about-grid{grid-template-columns:1fr}.about-card{display:none}.feat-grid{grid-template-columns:1fr}}
+@media(max-width:640px){.stat-item{border-right:none;border-bottom:1px solid var(--border)}.stat-item:last-child{border-bottom:none}.email-inn{flex-direction:column}.email-form{width:100%}.email-form input{width:100%}.sgrid{grid-template-columns:repeat(2,1fr)}.nav-search{max-width:140px}}
+</style>
 </head>
 <body>
 
-  <!-- NAV -->
-  <nav>
-    <a class="nav-logo" href="#">
-      <div class="logo-icon">
-        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path d="M21.6 7.2a2.7 2.7 0 0 0-1.9-1.9C18 5 12 5 12 5s-6 0-7.7.3A2.7 2.7 0 0 0 2.4 7.2C2 8.9 2 12 2 12s0 3.1.4 4.8a2.7 2.7 0 0 0 1.9 1.9C6 19 12 19 12 19s6 0 7.7-.3a2.7 2.7 0 0 0 1.9-1.9c.4-1.7.4-4.8.4-4.8s0-3.1-.4-4.8zM10 15V9l5 3-5 3z"/>
-        </svg>
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#">
+    <div class="logo-box"><svg viewBox="0 0 24 24"><path d="M21.6 7.2a2.7 2.7 0 0 0-1.9-1.9C18 5 12 5 12 5s-6 0-7.7.3A2.7 2.7 0 0 0 2.4 7.2C2 8.9 2 12 2 12s0 3.1.4 4.8a2.7 2.7 0 0 0 1.9 1.9C6 19 12 19 12 19s6 0 7.7-.3a2.7 2.7 0 0 0 1.9-1.9c.4-1.7.4-4.8.4-4.8s0-3.1-.4-4.8zM10 15V9l5 3-5 3z"/></svg></div>
+    YT Automation Hub
+  </a>
+  <div class="nav-search">
+    <svg class="si" viewBox="0 0 24 24" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg>
+    <input type="search" placeholder="Search tutorials…" oninput="onSearch(this.value)"/>
+  </div>
+  <div class="nav-r">
+    <button class="icon-pill" id="themeBtn" onclick="toggleTheme()" title="Toggle theme">🌙</button>
+    <a class="btn-o" href="#library">Library</a>
+    <button class="btn-p" onclick="openModal()">+ Add</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-glow" aria-hidden="true"></div>
+  <div class="badge"><span class="dot"></span>Free Tutorials Inside</div>
+  <h1>Master <em>YouTube</em><br>Automation</h1>
+  <p class="hero-sub">Build a channel that grows while you sleep. No camera, no editing — pure strategy and automation.</p>
+  <div class="hero-ctas">
+    <button class="btn-p btn-lg" onclick="document.getElementById('featured').scrollIntoView({behavior:'smooth'})">Watch Now</button>
+    <button class="btn-o btn-lg" onclick="openModal()">+ Add Tutorial</button>
+  </div>
+</section>
+
+<!-- STATS BAR -->
+<div class="stats-bar" id="statsBar">
+  <div class="stat-item"><div class="stat-val"><span class="acc">$</span><span class="cnt" data-t="0">0</span></div><div class="stat-lbl">Cost to start</div></div>
+  <div class="stat-item"><div class="stat-val"><span class="cnt" data-t="24">0</span><span class="acc">/7</span></div><div class="stat-lbl">Autopilot growth</div></div>
+  <div class="stat-item"><div class="stat-val"><span class="acc" style="font-size:1.5rem">∞</span></div><div class="stat-lbl">Income potential</div></div>
+  <div class="stat-item"><div class="stat-val"><span class="cnt" data-t="1">0</span><span class="acc"> step</span></div><div class="stat-lbl">To get started</div></div>
+</div>
+
+<hr/>
+
+<!-- ABOUT -->
+<div class="s" id="about">
+  <div class="about-grid">
+    <div>
+      <p class="slabel">About This Hub</p>
+      <h2 class="stitle">Everything You Need to Build a Faceless Channel</h2>
+      <div class="about-pts">
+        <div class="about-pt"><div class="pt-icon">🎯</div><div class="pt-text"><strong>Step-by-step tutorials</strong><p>From niche selection to monetization — every step is covered.</p></div></div>
+        <div class="about-pt"><div class="pt-icon">🤖</div><div class="pt-text"><strong>AI-powered tools</strong><p>Learn the best free and paid tools to automate your content pipeline.</p></div></div>
+        <div class="about-pt"><div class="pt-icon">💰</div><div class="pt-text"><strong>Real passive income</strong><p>Strategies that generate revenue without trading time for money.</p></div></div>
       </div>
-      YT Automation Hub
-    </a>
-    <div class="nav-actions">
-      <a class="btn-outline" href="#library">Library</a>
-      <button class="btn-primary" onclick="openModal()">+ Add Tutorial</button>
     </div>
-  </nav>
-
-  <!-- HERO -->
-  <section class="hero">
-    <div class="hero-bg" aria-hidden="true"></div>
-    <div class="badge"><span class="badge-dot"></span> Free Tutorial Inside</div>
-    <h1>Master <em>YouTube</em><br>Automation</h1>
-    <p class="hero-sub">Build a channel that grows while you sleep. No camera. No editing. Pure strategy.</p>
-    <div class="hero-ctas">
-      <button class="btn-primary btn-lg" onclick="document.getElementById('featured').scrollIntoView({behavior:'smooth'})">Watch Tutorial</button>
-      <button class="btn-outline btn-lg" onclick="openModal()">Add a Video</button>
-    </div>
-  </section>
-
-  <!-- STATS BAR -->
-  <div class="stats-bar">
-    <div class="stat-item">
-      <div class="stat-val">$<span>0</span></div>
-      <div class="stat-desc">Cost to start</div>
-    </div>
-    <div class="stat-item">
-      <div class="stat-val">24<span>/7</span></div>
-      <div class="stat-desc">Autopilot growth</div>
-    </div>
-    <div class="stat-item">
-      <div class="stat-val"><span>∞</span></div>
-      <div class="stat-desc">Scalable income</div>
-    </div>
-    <div class="stat-item">
-      <div class="stat-val">1<span> step</span></div>
-      <div class="stat-desc">To get started</div>
+    <div class="about-card">
+      <div style="font-weight:700;font-size:.95rem;margin-bottom:.25rem">Channel Growth Snapshot</div>
+      <div class="ac-row"><span class="ac-lbl">Upload Frequency</span><span class="ac-val">Daily</span></div>
+      <div class="ac-row"><span class="ac-lbl">Time Required</span><span class="ac-val">&lt; 2 hrs / week</span></div>
+      <div class="ac-row"><span class="ac-lbl">Face on Camera</span><span class="ac-val">Never</span></div>
+      <div class="ac-row"><span class="ac-lbl">Monetization</span><span class="ac-val">Multiple streams</span></div>
+      <div class="ac-row"><span class="ac-lbl">Upfront Cost</span><span class="ac-val">$0</span></div>
     </div>
   </div>
+</div>
 
-  <hr class="divider" />
+<hr/>
 
-  <!-- FEATURED VIDEO -->
-  <div class="section" id="featured">
-    <div class="section-header">
-      <p class="section-label">Featured Tutorial</p>
-      <h2 class="section-title">Start Here</h2>
+<!-- FEATURED VIDEO -->
+<div class="s" id="featured">
+  <p class="slabel">Featured Tutorial</p>
+  <h2 class="stitle" style="margin-bottom:2rem">Start Here</h2>
+  <div class="feat-grid">
+    <div class="vframe" id="featFrame" onclick="playFeat()">
+      <div class="ratio">
+        <img src="https://img.youtube.com/vi/UNEVviT8MxA/maxresdefault.jpg" alt="Tutorial thumbnail"/>
+        <div class="play-ov" id="featOv"><div class="play-circle"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>
+      </div>
     </div>
-
-    <div class="featured-grid">
-      <div class="video-embed-wrap">
-        <div class="ratio">
-          <iframe
-            src="https://www.youtube.com/embed/UNEVviT8MxA?rel=0&modestbranding=1"
-            title="YouTube Automation Tutorial"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            allowfullscreen>
-          </iframe>
-        </div>
-      </div>
-
-      <div class="featured-info">
-        <span class="tag">Beginner Friendly</span>
-        <h2>YouTube Automation — The Complete Guide</h2>
-        <p>
-          Learn exactly how to launch and grow a faceless YouTube channel using automation tools. This tutorial walks you through every step — from niche selection to scaling — so you can build real passive income online.
-        </p>
-        <a
-          class="yt-link"
-          href="https://youtu.be/UNEVviT8MxA?si=zshEwgs-abgZ_X9c"
-          target="_blank"
-          rel="noopener noreferrer">
-          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path d="M21.6 7.2a2.7 2.7 0 0 0-1.9-1.9C18 5 12 5 12 5s-6 0-7.7.3A2.7 2.7 0 0 0 2.4 7.2C2 8.9 2 12 2 12s0 3.1.4 4.8a2.7 2.7 0 0 0 1.9 1.9C6 19 12 19 12 19s6 0 7.7-.3a2.7 2.7 0 0 0 1.9-1.9c.4-1.7.4-4.8.4-4.8s0-3.1-.4-4.8zM10 15V9l5 3-5 3z"/>
-          </svg>
-          Watch on YouTube
-        </a>
-      </div>
+    <div class="feat-info">
+      <span class="tag tg-beg">Beginner Friendly</span>
+      <h2>YouTube Automation — The Complete Guide</h2>
+      <p>Launch and grow a faceless YouTube channel using automation tools. Every step covered — from niche selection to scaling to passive income. No experience needed.</p>
+      <a class="ytlink" href="https://youtu.be/UNEVviT8MxA?si=zshEwgs-abgZ_X9c" target="_blank" rel="noopener noreferrer">
+        <svg viewBox="0 0 24 24"><path d="M21.6 7.2a2.7 2.7 0 0 0-1.9-1.9C18 5 12 5 12 5s-6 0-7.7.3A2.7 2.7 0 0 0 2.4 7.2C2 8.9 2 12 2 12s0 3.1.4 4.8a2.7 2.7 0 0 0 1.9 1.9C6 19 12 19 12 19s6 0 7.7-.3a2.7 2.7 0 0 0 1.9-1.9c.4-1.7.4-4.8.4-4.8s0-3.1-.4-4.8zM10 15V9l5 3-5 3z"/></svg>
+        Watch on YouTube
+      </a>
     </div>
   </div>
+</div>
 
-  <hr class="divider" />
+<hr/>
 
-  <!-- LIBRARY -->
-  <div class="section" id="library">
-    <div class="library-header section-header">
-      <div>
-        <p class="section-label">Tutorial Library</p>
-        <h2 class="section-title">All Tutorials</h2>
-      </div>
-      <button class="btn-primary" onclick="openModal()">+ Add Tutorial</button>
+<!-- EMAIL SIGNUP -->
+<div class="email-sec">
+  <div class="email-inn">
+    <div class="email-txt">
+      <h3>Get Notified of New Tutorials</h3>
+      <p>New automation tips straight to your inbox. No spam, ever.</p>
     </div>
-
-    <div class="video-grid" id="videoGrid">
-      <!-- Populated by JS -->
-    </div>
+    <form class="email-form" onsubmit="handleEmail(event)">
+      <input type="email" id="emailInp" placeholder="your@email.com" required/>
+      <button type="submit" class="btn-p">Subscribe</button>
+    </form>
   </div>
+</div>
 
-  <!-- FOOTER -->
-  <footer>
-    <p>© 2026 YT Automation Hub — All rights reserved.</p>
-    <p>Built to help creators grow on <a href="https://youtube.com" target="_blank">YouTube</a>.</p>
-  </footer>
+<hr/>
 
-  <!-- ADD VIDEO MODAL -->
-  <div class="modal-overlay" id="modalOverlay" onclick="handleOverlayClick(event)">
-    <div class="modal" role="dialog" aria-modal="true" aria-label="Add Tutorial">
-      <div class="modal-top">
-        <h3>Add a Tutorial</h3>
-        <button class="close-btn" onclick="closeModal()" aria-label="Close">✕</button>
-      </div>
-
-      <form id="videoForm" onsubmit="handleSubmit(event)">
-        <div class="form-group">
-          <label for="videoUrl">YouTube URL *</label>
-          <input
-            id="videoUrl"
-            type="url"
-            placeholder="https://youtu.be/... or https://youtube.com/watch?v=..."
-            required />
-          <span class="form-error" id="urlError">Please enter a valid YouTube URL.</span>
-        </div>
-
-        <div class="form-group">
-          <label for="videoTitle">Title *</label>
-          <input
-            id="videoTitle"
-            type="text"
-            placeholder="e.g. How to Automate Your YouTube Channel"
-            required />
-        </div>
-
-        <div class="form-group">
-          <label for="videoWriteup">Write-up / Description *</label>
-          <textarea
-            id="videoWriteup"
-            placeholder="Describe what this tutorial covers, who it's for, and what viewers will learn..."
-            required></textarea>
-        </div>
-
-        <div class="modal-actions">
-          <button type="button" class="btn-outline" onclick="closeModal()">Cancel</button>
-          <button type="submit" class="btn-primary">Save Tutorial</button>
-        </div>
-      </form>
-    </div>
+<!-- TUTORIAL LIBRARY -->
+<div class="s" id="library">
+  <div class="lib-top">
+    <div><p class="slabel">Tutorial Library</p><h2 class="stitle">All Tutorials</h2></div>
+    <button class="btn-p" onclick="openModal('tutorial')">+ Add Tutorial</button>
   </div>
+  <div class="lib-ctrl">
+    <div class="ftabs">
+      <button class="ftab active" onclick="setFilter('all',this)">All</button>
+      <button class="ftab" onclick="setFilter('beginner',this)">Beginner</button>
+      <button class="ftab" onclick="setFilter('tools',this)">Tools</button>
+      <button class="ftab" onclick="setFilter('monetization',this)">Monetization</button>
+      <button class="ftab" onclick="setFilter('advanced',this)">Advanced</button>
+    </div>
+    <select class="sort-sel" onchange="setSort(this.value)">
+      <option value="newest">Newest first</option>
+      <option value="oldest">Oldest first</option>
+      <option value="az">A → Z</option>
+    </select>
+  </div>
+  <div class="vgrid" id="tutGrid"></div>
+</div>
 
-  <!-- TOAST -->
-  <div class="toast" id="toast"></div>
+<hr/>
 
-  <script>
-    // ── STORAGE KEY ──
-    const KEY = 'yt_hub_videos';
+<!-- SHORTS -->
+<div class="s" id="shorts">
+  <div class="lib-top">
+    <div><p class="slabel">YouTube Shorts</p><h2 class="stitle">Quick Tips & Shorts</h2></div>
+    <button class="btn-p" onclick="openModal('short')">+ Add Short</button>
+  </div>
+  <div class="sgrid" id="shortGrid"></div>
+</div>
 
-    // ── LOAD / SAVE ──
-    function load() {
-      try { return JSON.parse(localStorage.getItem(KEY)) || []; }
-      catch { return []; }
-    }
-    function save(data) { localStorage.setItem(KEY, JSON.stringify(data)); }
+<!-- FOOTER -->
+<footer>
+  <p>© 2026 YT Automation Hub — Built for creators.</p>
+  <p><a href="#about">About</a> · <a href="#library">Tutorials</a> · <a href="#shorts">Shorts</a> · <a href="https://youtube.com" target="_blank">YouTube</a></p>
+</footer>
 
-    // ── EXTRACT VIDEO ID ──
-    function extractId(url) {
-      const patterns = [
-        /youtu\.be\/([a-zA-Z0-9_-]{11})/,
-        /youtube\.com\/watch\?.*v=([a-zA-Z0-9_-]{11})/,
-        /youtube\.com\/embed\/([a-zA-Z0-9_-]{11})/,
-        /youtube\.com\/shorts\/([a-zA-Z0-9_-]{11})/,
-      ];
-      for (const p of patterns) {
-        const m = url.match(p);
-        if (m) return m[1];
-      }
-      return null;
-    }
+<!-- BACK TO TOP -->
+<button class="btt" id="btt" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Back to top">↑</button>
 
-    // ── RENDER GRID ──
-    function renderGrid() {
-      const grid = document.getElementById('videoGrid');
-      const data = load();
+<!-- MODAL -->
+<div class="overlay" id="overlay" onclick="overlayClick(event)">
+  <div class="modal">
+    <div class="modal-head">
+      <h3 id="mTitle">Add Content</h3>
+      <button class="cbtn" onclick="closeModal()">✕</button>
+    </div>
+    <div class="type-tog" id="typeTog">
+      <button class="tbtn active" id="tTut" onclick="setMType('tutorial')">📹 Tutorial</button>
+      <button class="tbtn" id="tShort" onclick="setMType('short')">⚡ Short</button>
+    </div>
+    <form id="mForm" onsubmit="handleSubmit(event)">
+      <div class="fg">
+        <label>YouTube URL *</label>
+        <input id="fUrl" type="url" placeholder="https://youtu.be/... or https://youtube.com/shorts/..." required/>
+        <div class="ferr" id="urlErr">Please enter a valid YouTube URL.</div>
+      </div>
+      <div class="fg">
+        <label>Title *</label>
+        <input id="fTitle" type="text" placeholder="e.g. How to Automate Your Channel in 2026" required/>
+      </div>
+      <div class="fg" id="catFg">
+        <label>Category</label>
+        <select id="fCat">
+          <option value="beginner">Beginner</option>
+          <option value="tools">Tools</option>
+          <option value="monetization">Monetization</option>
+          <option value="advanced">Advanced</option>
+        </select>
+      </div>
+      <div class="fg">
+        <label>Write-up / Description *</label>
+        <textarea id="fDesc" placeholder="Describe what this video covers, who it's for, and key takeaways…" required></textarea>
+      </div>
+      <div class="mfoot">
+        <button type="button" class="btn-o" onclick="closeModal()">Cancel</button>
+        <button type="submit" class="btn-p" id="mSubmit">Save</button>
+      </div>
+    </form>
+  </div>
+</div>
 
-      if (!data.length) {
-        grid.innerHTML = `
-          <div class="empty-state">
-            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path d="M21.6 7.2a2.7 2.7 0 0 0-1.9-1.9C18 5 12 5 12 5s-6 0-7.7.3A2.7 2.7 0 0 0 2.4 7.2C2 8.9 2 12 2 12s0 3.1.4 4.8a2.7 2.7 0 0 0 1.9 1.9C6 19 12 19 12 19s6 0 7.7-.3a2.7 2.7 0 0 0 1.9-1.9c.4-1.7.4-4.8.4-4.8s0-3.1-.4-4.8zM10 15V9l5 3-5 3z"/>
-            </svg>
-            <p>No tutorials yet. Click <strong>+ Add Tutorial</strong> to add your first one.</p>
-          </div>`;
-        return;
-      }
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
 
-      grid.innerHTML = data.map((v, i) => `
-        <div class="video-card" id="card-${i}">
-          <div class="card-thumb">
-            <iframe
-              src="https://www.youtube.com/embed/${v.videoId}?rel=0&modestbranding=1"
-              title="${escHtml(v.title)}"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowfullscreen
-              loading="lazy">
-            </iframe>
-          </div>
-          <div class="card-body">
-            <div class="card-title">${escHtml(v.title)}</div>
-            <div class="card-writeup">${escHtml(v.writeup)}</div>
-          </div>
-          <div class="card-footer">
-            <span class="card-date">${v.date}</span>
-            <button class="btn-icon" onclick="deleteCard(${i})" title="Remove">
-              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path d="M9 3h6l1 1h4v2H4V4h4L9 3zm-4 5h14l-1 13H6L5 8zm5 2v9h1v-9h-1zm3 0v9h1v-9h-1z"/>
-              </svg>
-            </button>
-          </div>
-        </div>
-      `).join('');
-    }
+<script>
+const K={t:'yth_tuts',s:'yth_shorts',w:'yth_watched',theme:'yth_theme'};
+const ld=k=>{try{return JSON.parse(localStorage.getItem(k))||[];}catch{return[];}};
+const sv=(k,d)=>localStorage.setItem(k,JSON.stringify(d));
 
-    // ── ESCAPE HTML ──
-    function escHtml(str) {
-      return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-    }
+// THEME
+function initTheme(){const th=localStorage.getItem(K.theme)||'dark';document.documentElement.setAttribute('data-theme',th);document.getElementById('themeBtn').textContent=th==='dark'?'🌙':'☀️';}
+function toggleTheme(){const c=document.documentElement.getAttribute('data-theme');const n=c==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',n);sv(K.theme,n);document.getElementById('themeBtn').textContent=n==='dark'?'🌙':'☀️';}
 
-    // ── DELETE CARD ──
-    function deleteCard(i) {
-      const data = load();
-      data.splice(i, 1);
-      save(data);
-      renderGrid();
-      showToast('Tutorial removed.');
-    }
+// WATCHED
+const getW=()=>new Set(ld(K.w));
+const svW=s=>sv(K.w,[...s]);
+const isW=id=>getW().has(id);
+function togW(type,i){const key=type==='t'?K.t:K.s;const data=ld(key);const id=data[i].vid;const w=getW();w.has(id)?w.delete(id):w.add(id);svW(w);type==='t'?renderTuts():renderShorts();}
 
-    // ── MODAL ──
-    function openModal() {
-      document.getElementById('modalOverlay').classList.add('open');
-      document.getElementById('videoUrl').focus();
-    }
-    function closeModal() {
-      document.getElementById('modalOverlay').classList.remove('open');
-      document.getElementById('videoForm').reset();
-      document.getElementById('urlError').style.display = 'none';
-    }
-    function handleOverlayClick(e) {
-      if (e.target === document.getElementById('modalOverlay')) closeModal();
-    }
-    document.addEventListener('keydown', e => {
-      if (e.key === 'Escape') closeModal();
-    });
+// ID EXTRACTION
+function xid(url){const ps=[/youtu\.be\/([a-zA-Z0-9_-]{11})/,/youtube\.com\/watch\?.*v=([a-zA-Z0-9_-]{11})/,/youtube\.com\/embed\/([a-zA-Z0-9_-]{11})/,/youtube\.com\/shorts\/([a-zA-Z0-9_-]{11})/,/youtube\.com\/v\/([a-zA-Z0-9_-]{11})/];for(const p of ps){const m=url.match(p);if(m)return m[1];}return null;}
 
-    // ── SUBMIT ──
-    function handleSubmit(e) {
-      e.preventDefault();
-      const url     = document.getElementById('videoUrl').value.trim();
-      const title   = document.getElementById('videoTitle').value.trim();
-      const writeup = document.getElementById('videoWriteup').value.trim();
-      const errEl   = document.getElementById('urlError');
+const esc=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+const th=id=>`https://img.youtube.com/vi/${id}/hqdefault.jpg`;
+const fmtD=d=>new Date(d).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
 
-      const videoId = extractId(url);
-      if (!videoId) {
-        errEl.style.display = 'block';
-        return;
-      }
-      errEl.style.display = 'none';
+// TOAST
+let tt;
+function toast(msg,type=''){const el=document.getElementById('toast');el.textContent=msg;el.className='toast show'+(type?' '+type:'');clearTimeout(tt);tt=setTimeout(()=>el.className='toast',3000);}
 
-      const data = load();
-      data.unshift({
-        videoId,
-        url,
-        title,
-        writeup,
-        date: new Date().toLocaleDateString('en-US', { year:'numeric', month:'short', day:'numeric' })
-      });
-      save(data);
-      renderGrid();
-      closeModal();
-      showToast('Tutorial added!', 'success');
-      document.getElementById('library').scrollIntoView({ behavior: 'smooth' });
-    }
+// BACK TO TOP
+window.addEventListener('scroll',()=>document.getElementById('btt').classList.toggle('show',window.scrollY>400));
 
-    // ── TOAST ──
-    function showToast(msg, type = '') {
-      const t = document.getElementById('toast');
-      t.textContent = msg;
-      t.className = 'toast show' + (type ? ' ' + type : '');
-      setTimeout(() => { t.className = 'toast'; }, 3000);
-    }
+// FILTER STATE
+let cat='all',sort='newest',q='';
+function onSearch(v){q=v.toLowerCase();renderTuts();renderShorts();}
+function setFilter(c,el){cat=c;document.querySelectorAll('.ftab').forEach(t=>t.classList.remove('active'));el.classList.add('active');renderTuts();}
+function setSort(v){sort=v;renderTuts();}
 
-    // ── INIT ──
-    renderGrid();
-  </script>
+function applyFS(data){
+  let out=[...data];
+  if(cat!=='all')out=out.filter(v=>v.cat===cat);
+  if(q)out=out.filter(v=>v.title.toLowerCase().includes(q)||v.desc.toLowerCase().includes(q));
+  out.sort((a,b)=>{
+    if(a.pin&&!b.pin)return -1;
+    if(!a.pin&&b.pin)return 1;
+    if(sort==='newest')return new Date(b.ts)-new Date(a.ts);
+    if(sort==='oldest')return new Date(a.ts)-new Date(b.ts);
+    if(sort==='az')return a.title.localeCompare(b.title);
+    return 0;
+  });
+  return out;
+}
+
+function tagHtml(c){const m={beginner:'tg-beg',tools:'tg-tool',monetization:'tg-mon',advanced:'tg-adv'};return`<span class="tag ${m[c]||'tg-beg'}">${c||'beginner'}</span>`;}
+
+// PLAY
+function playCard(el,vid){el.innerHTML=`<iframe src="https://www.youtube.com/embed/${vid}?autoplay=1&rel=0&modestbranding=1" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen></iframe>`;el.style.cursor='default';el.onclick=null;}
+function playFeat(){const f=document.getElementById('featFrame');f.innerHTML=`<div class="ratio"><iframe src="https://www.youtube.com/embed/UNEVviT8MxA?autoplay=1&rel=0&modestbranding=1" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen></iframe></div>`;f.style.cursor='default';f.onclick=null;}
+
+// RENDER TUTORIALS
+function renderTuts(){
+  const grid=document.getElementById('tutGrid');
+  const raw=ld(K.t);
+  const data=applyFS(raw);
+  if(!data.length){grid.innerHTML=`<div class="empty"><div class="empty-ico">📹</div><p>${q||cat!=='all'?'No tutorials match your search.':'No tutorials yet. Click <strong>+ Add Tutorial</strong> to get started.'}</p></div>`;return;}
+  grid.innerHTML=data.map(v=>{
+    const ri=raw.findIndex(r=>r.id===v.id);
+    const watched=isW(v.vid);
+    return`<div class="vcard${v.pin?' pinned':''}${watched?' done':''}">
+      ${v.pin?'<div class="pin-badge">📌 Pinned</div>':''}
+      <div class="cthumb" onclick="playCard(this,'${v.vid}')">
+        <img src="${th(v.vid)}" alt="${esc(v.title)}" loading="lazy"/>
+        <div class="cplay"><div class="cplay-btn"><svg viewBox="0 0 24 24" fill="#fff"><path d="M8 5v14l11-7z"/></svg></div></div>
+      </div>
+      <div class="cbody">
+        <div class="cmeta">${tagHtml(v.cat)}</div>
+        <div class="ctitle">${esc(v.title)}</div>
+        <div class="cwriteup">${esc(v.desc)}</div>
+      </div>
+      <div class="cactions">
+        <span class="cdate">${fmtD(v.ts)}</span>
+        <button class="ibtn${watched?' wactive':''}" title="${watched?'Unmark':'Mark watched'}" onclick="togW('t',${ri})"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></button>
+        <button class="ibtn${v.pin?' active':''}" title="${v.pin?'Unpin':'Pin'}" onclick="togPin('t',${ri})"><svg viewBox="0 0 24 24"><path d="M12 2l3 7h7l-6 4 2 7-6-4-6 4 2-7L2 9h7z"/></svg></button>
+        <button class="ibtn" title="Share" onclick="share('${v.vid}','${esc(v.title)}')"><svg viewBox="0 0 24 24"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8M16 6l-4-4-4 4M12 2v13"/></svg></button>
+        <button class="ibtn" title="Edit" onclick="openEdit('t',${ri})"><svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14c0 1.1.9 2 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+        <button class="ibtn del" title="Delete" onclick="del('t',${ri})"><svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg></button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// RENDER SHORTS
+function renderShorts(){
+  const grid=document.getElementById('shortGrid');
+  const raw=ld(K.s);
+  const data=q?raw.filter(v=>v.title.toLowerCase().includes(q)||v.desc.toLowerCase().includes(q)):[...raw];
+  if(!data.length){grid.innerHTML=`<div class="empty"><div class="empty-ico">⚡</div><p>${q?'No shorts match your search.':'No shorts yet. Click <strong>+ Add Short</strong> to get started.'}</p></div>`;return;}
+  grid.innerHTML=data.map(v=>{
+    const ri=raw.findIndex(r=>r.id===v.id);
+    return`<div class="scard">
+      <div class="sthumb" onclick="playCard(this,'${v.vid}')">
+        <img src="${th(v.vid)}" alt="${esc(v.title)}" loading="lazy"/>
+        <div class="cplay"><div class="cplay-btn"><svg viewBox="0 0 24 24" fill="#fff"><path d="M8 5v14l11-7z"/></svg></div></div>
+      </div>
+      <div class="sbody">
+        <div class="stitle">${esc(v.title)}</div>
+        <div class="sdesc">${esc(v.desc)}</div>
+      </div>
+      <div class="sact">
+        <button class="ibtn" title="Share" onclick="share('${v.vid}','${esc(v.title)}')"><svg viewBox="0 0 24 24"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8M16 6l-4-4-4 4M12 2v13"/></svg></button>
+        <button class="ibtn" title="Edit" onclick="openEdit('s',${ri})"><svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14c0 1.1.9 2 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+        <button class="ibtn del" title="Delete" onclick="del('s',${ri})"><svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg></button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ACTIONS
+function del(type,i){const key=type==='t'?K.t:K.s;const data=ld(key);data.splice(i,1);sv(key,data);type==='t'?renderTuts():renderShorts();toast('Removed.');}
+function togPin(type,i){const key=type==='t'?K.t:K.s;const data=ld(key);data[i].pin=!data[i].pin;sv(key,data);renderTuts();toast(data[i].pin?'Pinned to top.':'Unpinned.','ok');}
+async function share(vid,title){const url=`https://youtu.be/${vid}`;try{if(navigator.share){await navigator.share({title,url});}else{await navigator.clipboard.writeText(url);toast('Link copied!','ok');}}catch{try{await navigator.clipboard.writeText(url);}catch{}toast('Link copied!','ok');}}
+
+// MODAL
+let eType=null,eIdx=null,mType='tutorial';
+function setMType(t){mType=t;document.getElementById('tTut').classList.toggle('active',t==='tutorial');document.getElementById('tShort').classList.toggle('active',t==='short');document.getElementById('catFg').style.display=t==='tutorial'?'':'none';document.getElementById('mTitle').textContent=(eIdx!==null?'Edit ':'Add ')+(t==='short'?'Short':'Tutorial');}
+function openModal(t='tutorial'){eType=null;eIdx=null;mType=t;document.getElementById('mForm').reset();document.getElementById('urlErr').style.display='none';document.getElementById('typeTog').style.display='';setMType(t);document.getElementById('mSubmit').textContent='Save';document.getElementById('overlay').classList.add('open');setTimeout(()=>document.getElementById('fUrl').focus(),200);}
+function openEdit(type,i){const key=type==='t'?K.t:K.s;const data=ld(key);const v=data[i];eType=type;eIdx=i;mType=type==='t'?'tutorial':'short';document.getElementById('fUrl').value=v.url;document.getElementById('fTitle').value=v.title;document.getElementById('fDesc').value=v.desc;if(type==='t')document.getElementById('fCat').value=v.cat||'beginner';document.getElementById('typeTog').style.display='none';document.getElementById('catFg').style.display=type==='t'?'':'none';document.getElementById('urlErr').style.display='none';document.getElementById('mTitle').textContent=type==='s'?'Edit Short':'Edit Tutorial';document.getElementById('mSubmit').textContent='Update';document.getElementById('overlay').classList.add('open');}
+function closeModal(){document.getElementById('overlay').classList.remove('open');eType=null;eIdx=null;}
+function overlayClick(e){if(e.target===document.getElementById('overlay'))closeModal();}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
+
+// SUBMIT
+function handleSubmit(e){
+  e.preventDefault();
+  const url=document.getElementById('fUrl').value.trim();
+  const title=document.getElementById('fTitle').value.trim();
+  const desc=document.getElementById('fDesc').value.trim();
+  const cat=document.getElementById('fCat').value;
+  const errEl=document.getElementById('urlErr');
+  const vid=xid(url);
+  if(!vid){errEl.style.display='block';return;}
+  errEl.style.display='none';
+  const type=eType||mType;
+  const key=type==='t'||type==='tutorial'?K.t:K.s;
+  const data=ld(key);
+  if(eIdx!==null){data[eIdx]={...data[eIdx],url,title,desc,cat};sv(key,data);toast('Updated!','ok');}
+  else{data.unshift({id:Date.now().toString(),vid,url,title,desc,cat,ts:new Date().toISOString(),pin:false});sv(key,data);toast((type==='s'||type==='short')?'Short added!':'Tutorial added!','ok');}
+  closeModal();
+  if(type==='t'||type==='tutorial'){renderTuts();document.getElementById('library').scrollIntoView({behavior:'smooth'});}
+  else{renderShorts();document.getElementById('shorts').scrollIntoView({behavior:'smooth'});}
+}
+
+// EMAIL
+function handleEmail(e){e.preventDefault();const em=document.getElementById('emailInp').value.trim();const subs=ld('yth_subs');if(!subs.includes(em)){subs.push(em);sv('yth_subs',subs);}document.getElementById('emailInp').value='';toast('Subscribed! 🎉','ok');}
+
+// ANIMATED COUNTERS
+function animCnt(el){const t=parseInt(el.dataset.t,10);if(!t)return;const dur=1100;const step=t/(dur/16);let c=0;const tmr=setInterval(()=>{c=Math.min(c+step,t);el.textContent=Math.floor(c);if(c>=t)clearInterval(tmr);},16);}
+const obs=new IntersectionObserver(entries=>{entries.forEach(en=>{if(en.isIntersecting){en.target.querySelectorAll('.cnt').forEach(animCnt);obs.unobserve(en.target);}});},{threshold:.5});
+obs.observe(document.getElementById('statsBar'));
+
+// INIT
+initTheme();
+renderTuts();
+renderShorts();
+</script>
 </body>
 </html>
